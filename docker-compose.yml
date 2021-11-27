@@ -1,21 +1,35 @@
 version: "3.9"
 
 services:
-  postgres:
-    env_file: .env
+  api_db:
     build:
       context: .
       dockerfile: Dockerfile-postgres
-      args:
-        - DB_PASSWORD=${DB_PASSWORD}
-        - DB_USER=${DB_USER}
-        - DB_DATABASE=${DB_DATABASE}
+    env_file:
+      - ./api/.env
 
   api:
     build:
       context: .
-      dockerfile: Dockerfile-php
+      dockerfile: Dockerfile-symfony
+      args:
+        - CONTENT_SOURCE_PATH=./api
+        - CONTENT_TARGET_PATH=/usr/local/var/www/api
     volumes:
-       - ./api:/usr/local/var/www/api
+      - ./api:/usr/local/var/www/api
     depends_on:
-      - postgres
+      - api_db
+
+  nginx:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+      args:
+        - CONTENT_API_SOURCE_PATH=./api
+        - CONTENT_API_TARGET_PATH=/usr/share/nginx/html/api
+    volumes:
+      - ./api:/usr/share/nginx/html/api:ro
+    depends_on:
+      - api

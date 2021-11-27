@@ -1,5 +1,8 @@
 FROM php:fpm-alpine3.14
 
+ARG CONTENT_SOURCE_PATH
+ARG CONTENT_TARGET_PATH
+
 RUN apk add --no-cache $PHPIZE_DEPS
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/etc/php --filename=composer creates=/usr/local/etc/php/composer warn=no
@@ -13,4 +16,4 @@ RUN docker-php-ext-enable xdebug \
 
 WORKDIR /usr/local/var/www/
 
-COPY ./api ./api
+COPY $CONTENT_PATH $CONTENT_TARGET_PATH
