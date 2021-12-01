@@ -2,24 +2,32 @@ version: "3.9"
 
 services:
   api_db:
-    build:
-      context: .
-      dockerfile: Dockerfile-postgres
     env_file:
-      - ./api/.env
-
-  api:
+      - .env
     build:
       context: .
-      dockerfile: Dockerfile-symfony
+      dockerfile: Dockerfile-apidb
       args:
-        - CONTENT_SOURCE_PATH=./api
-        - CONTENT_TARGET_PATH=/usr/local/var/www/api
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_USER=${DB_USER}
+        - DB_DATABASE=${DB_DATABASE}
+        - DB_VERSION=${DB_IMAGE_VERSION}
+    ports:
+      - ${DB_API_EXTERNAL_PORT}:${DB_API_INTERNAL_PORT}
+    container_name: ${DB_CONTAINER_NAME}
+  api:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile-api
+      args:
+        - PHP_VERSION=${PHP_VERSION}
     volumes:
-      - ./api:/usr/local/var/www/api
+      - ${API_LOCALE_VOLUME_PATH}:${API_TARGET_VOLUME_PATH}:${API_VOLUME_MODE}
     depends_on:
       - api_db
-
+    container_name: ${API_CONTAINER_NAME}
   nginx:
     env_file:
       - .env
@@ -27,9 +35,12 @@ services:
       context: .
       dockerfile: Dockerfile-nginx
       args:
-        - CONTENT_API_SOURCE_PATH=./api
-        - CONTENT_API_TARGET_PATH=/usr/share/nginx/html/api
+        - NGINX_VERSION=${NGINX_VERSION}
     volumes:
-      - ./api:/usr/share/nginx/html/api:ro
+      - ${API_LOCALE_VOLUME_PATH}:${NGINX_API_TARGET_VOLUME_PATH}:${NGINX_API_VOLUME_MODE}
+    ports:
+      - ${NGINX_API_EXTERNAL_PORT}:${NGINX_API_INTERNAL_PORT}
+    command: [ nginx-debug, '-g', 'daemon off;' ]
     depends_on:
       - api
+    container_name: ${NGINX_CONTAINER_NAME}
