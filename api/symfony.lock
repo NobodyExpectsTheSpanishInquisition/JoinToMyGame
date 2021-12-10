@@ -12,7 +12,7 @@
         "version": "3.0.0"
     },
     "symfony/cache": {
-        "version": "v6.0.0"
+        "version": "v6.0.1"
     },
     "symfony/cache-contracts": {
         "version": "v3.0.0"
@@ -33,19 +33,19 @@
         ]
     },
     "symfony/dependency-injection": {
-        "version": "v6.0.0"
+        "version": "v6.0.1"
     },
     "symfony/deprecation-contracts": {
         "version": "v3.0.0"
     },
     "symfony/dotenv": {
-        "version": "v6.0.0"
+        "version": "v6.0.1"
     },
     "symfony/error-handler": {
-        "version": "v6.0.0"
+        "version": "v6.0.1"
     },
     "symfony/event-dispatcher": {
-        "version": "v6.0.0"
+        "version": "v6.0.1"
     },
     "symfony/event-dispatcher-contracts": {
         "version": "v3.0.0"
@@ -88,10 +88,10 @@
         ]
     },
     "symfony/http-foundation": {
-        "version": "v6.0.0"
+        "version": "v6.0.1"
     },
     "symfony/http-kernel": {
-        "version": "v6.0.0"
+        "version": "v6.0.1"
     },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.23.1"
@@ -125,15 +125,15 @@
         "version": "v3.0.0"
     },
     "symfony/string": {
-        "version": "v6.0.0"
+        "version": "v6.0.1"
     },
     "symfony/var-dumper": {
-        "version": "v6.0.0"
+        "version": "v6.0.1"
     },
     "symfony/var-exporter": {
         "version": "v6.0.0"
     },
     "symfony/yaml": {
-        "version": "v6.0.0"
+        "version": "v6.0.1"
     }
 }

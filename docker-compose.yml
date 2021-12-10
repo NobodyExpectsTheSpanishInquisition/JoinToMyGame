@@ -38,6 +38,7 @@ services:
         - NGINX_VERSION=${NGINX_VERSION}
     volumes:
       - ${API_LOCALE_VOLUME_PATH}:${NGINX_API_TARGET_VOLUME_PATH}:${NGINX_API_VOLUME_MODE}
+      - ./nginx.api.conf:/etc/nginx/conf.d/default.conf
     ports:
       - ${NGINX_API_EXTERNAL_PORT}:${NGINX_API_INTERNAL_PORT}
     command: [ nginx-debug, '-g', 'daemon off;' ]
