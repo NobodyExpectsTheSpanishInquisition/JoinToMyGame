@@ -3,8 +3,6 @@ FROM php:$PHP_VERSION
 
 RUN apk add --no-cache $PHPIZE_DEPS
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/etc/php --filename=composer creates=/usr/local/etc/php/composer warn=no
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer creates=/usr/local/bin/composer warn=no
 
 RUN pecl install xdebug
-
-WORKDIR /usr/local/var/www/
