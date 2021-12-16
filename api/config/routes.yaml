@@ -2,11 +2,6 @@ controllers:
     resource: ../src/Controller/
     type: annotation
 
-helloWorld:
-  path: /
-  controller: App\Controller\ExampleController::test
-  methods: GET
-
 kernel:
     resource: ../src/Kernel.php
     type: annotation

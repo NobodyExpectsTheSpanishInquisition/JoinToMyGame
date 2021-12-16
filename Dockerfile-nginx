@@ -1,4 +1,2 @@
 ARG NGINX_VERSION
 FROM nginx:$NGINX_VERSION
-
-COPY nginx.api.conf /etc/nginx/nginx.api.conf
