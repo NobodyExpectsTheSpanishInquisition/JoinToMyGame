@@ -59,6 +59,23 @@ services:
       - auth_db
     container_name: ${AUTH_CONTAINER_NAME}
 
+  proxy_gateway:
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: Dockerfile-proxy-gateway
+      args:
+        - PHP_VERSION=${PHP_VERSION}
+    ports:
+      - ${PROXY_GATEWAY_PORT}
+    volumes:
+      - ${PROXY_GATEWAY_LOCAL_VOLUME_PATH}:${PROXY_GATEWAY_TARGET_VOLUME_PATH}:${PROXY_GATEWAY_VOLUME_MODE}
+    depends_on:
+      - api
+      - auth
+    container_name: ${PROXY_GATEWAY_CONTAINER_NAME}
+
   nginx:
     env_file:
       - .env
@@ -70,10 +87,12 @@ services:
     volumes:
       - ${API_LOCALE_VOLUME_PATH}:${NGINX_API_TARGET_VOLUME_PATH}:${NGINX_API_VOLUME_MODE}
       - ${AUTH_LOCALE_VOLUME_PATH}:${NGINX_AUTH_TARGET_VOLUME_PATH}:${NGINX_AUTH_VOLUME_MODE}
+      - ${PROXY_GATEWAY_LOCAL_VOLUME_PATH}:${NGINX_PROXY_GATEWAY_TARGET_VOLUME_PATH}:${NGINX_PROXY_GATEWAY_VOLUME_MODE}
       - ./default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - ${NGINX_API_EXTERNAL_PORT}:${NGINX_API_INTERNAL_PORT}
       - ${NGINX_AUTH_EXTERNAL_PORT}:${NGINX_AUTH_INTERNAL_PORT}
+      - ${NGINX_PROXY_GATEWAY_EXTERNAL_PORT}:${NGINX_PROXY_GATEWAY_INTERNAL_PORT}
     command: [ nginx-debug, '-g', 'daemon off;' ]
     depends_on:
       - api
